@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#170b20"><title>Light Up the Land — Hoops prototype</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#110b18;color:#fff7e7;font:15px system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:22px}header{display:flex;align-items:center;justify-content:space-between;gap:12px}.eyebrow{font-size:10px;font-weight:800;letter-spacing:2px;color:#e4b664}h1{font-size:clamp(24px,5vw,38px);letter-spacing:-1.5px;margin:4px 0 0}button,input{font:inherit}button{cursor:pointer;background:#2b2135;color:#fff7e7;border:1px solid #55415c;border-radius:12px;padding:10px 14px}button:hover{background:#493049}button:focus-visible,input:focus-visible,canvas:focus-visible{outline:3px solid #ffc862;outline-offset:3px}.badge{color:#e4b664;font-size:11px;border:1px solid #65503a;border-radius:99px;padding:7px 10px}.intro{color:#b7a9c2;margin:14px 0 18px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:20px}.court{position:relative;border-radius:22px;overflow:hidden;border:1px solid #4a2b45;background:#120d24;box-shadow:0 25px 90px #0005}canvas{display:block;width:100%;aspect-ratio:540/660;touch-action:none}.hud{position:absolute;top:18px;left:18px;right:18px;display:flex;justify-content:space-between;pointer-events:none}.hud div{background:#140c22d9;padding:9px 13px;border:1px solid #63425b;border-radius:13px;backdrop-filter:blur(8px)}.hud span{display:block;font-size:9px;letter-spacing:1.5px;color:#c8adc2}.hud strong{font-size:24px}.message{position:absolute;top:34%;left:10%;right:10%;text-align:center;font-size:28px;font-weight:900;text-shadow:0 2px 18px #000;pointer-events:none;transition:opacity .25s}.hint{position:absolute;bottom:15px;left:0;right:0;text-align:center;color:#ffedc4;pointer-events:none;font-size:12px}aside{padding:20px 0}.label{color:#b7a9c2;font-size:11px;letter-spacing:1.5px;font-weight:700}.big{font-size:60px;font-weight:900;letter-spacing:-3px;line-height:1.2}.progress{height:7px;background:#3d2943;border-radius:8px;overflow:hidden;margin:16px 0 22px}.progress i{display:block;height:100%;background:linear-gradient(90deg,#f25381,#ffc95c);width:0;transition:width .4s}.milestone{display:flex;gap:12px;align-items:center;padding:16px 0;border-bottom:1px solid #39273e;color:#94839f}.milestone b{color:inherit;font-size:21px;min-width:40px}.milestone.active{color:#ffcf76}.milestone small{display:block;margin-top:4px;font-size:11px;color:#aa98b2}.connection{font-size:12px;color:#b7a9c2;line-height:1.6;margin-top:22px}.actions{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}footer{color:#8e7d99;font-size:11px;margin-top:22px}dialog{background:#211429;color:#fff7e7;border:1px solid #694252;border-radius:20px;max-width:420px;width:calc(100% - 32px);padding:24px}dialog::backdrop{background:#07020bc9}dialog h2{margin-top:0}dialog label{display:flex;justify-content:space-between;align-items:center;margin:15px 0}input[type=number],input[type=text]{width:120px;background:#100b19;color:#fff;border:1px solid #725565;border-radius:8px;padding:8px}input[type=checkbox]{accent-color:#e6ad4e}dialog p{color:#bba8c3;font-size:13px;line-height:1.6}.error{color:#ffb8b8!important}#roomName{width:130px}@media(max-width:700px){main{padding:14px}.layout{grid-template-columns:1fr;gap:0}aside{padding:20px 4px}.big{font-size:44px}.milestones{display:flex;gap:15px}.milestone{flex:1;display:block;padding:12px 0}.milestone b{display:block}.milestone span{font-size:12px}.intro{font-size:13px}.badge{display:none}canvas{max-height:70vh}h1{font-size:28px}header button{padding:9px;font-size:12px}}
+
+/* Bright comic-book treatment */
+body{background:#fff0be;color:#321547;background-image:radial-gradient(#e9cb8d 1px,transparent 1px);background-size:18px 18px}
+.eyebrow{color:#922354}.intro,.label,.connection{color:#684974}h1{font-weight:950}h1 span{color:#f04084!important}
+button{background:#ffe26b;color:#321547;border:3px solid #321547;box-shadow:3px 3px 0 #321547;font-weight:800;transition:transform .12s,box-shadow .12s}button:hover{background:#ffb9d3;transform:translateY(-2px)}button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #321547}
+.court{border:4px solid #321547;box-shadow:7px 8px 0 #321547;background:#704fe0}.hud div{background:#fff4cd;border:3px solid #321547;color:#321547;box-shadow:3px 3px 0 #321547;backdrop-filter:none}.hud span{color:#7f456b;font-weight:800}
+.message{color:#ffec56;-webkit-text-stroke:1px #582254;text-shadow:3px 3px 0 #582254;font-size:34px;transform:rotate(-5deg)}.hint{color:#321547;font-weight:800;background:#fff4cdc9;margin:0 12%;border-radius:99px;padding:6px}
+aside{background:#fff9df;border:3px solid #321547;border-radius:20px;padding:20px;box-shadow:5px 5px 0 #e0b45c}.big{color:#922354}.progress{background:#e4d2f2;height:12px;border:2px solid #321547}.progress i{background:linear-gradient(90deg,#ff4590,#ffc928)}.milestone{color:#755281;border-color:#e4c8d6}.milestone.active{color:#a91b62}.milestone small{color:#745b78}.milestone.active b{background:#ffe064;border-radius:10px;text-align:center}.milestone b{padding:4px}footer{color:#775c7c}
+@media(max-width:700px){aside{margin-top:18px;padding:16px}.milestone b{width:max-content;min-width:35px}.message{font-size:28px}}
+</style></head><body><main>
+<header><div><div class="eyebrow">CLEVELAND • FAN PLAYGROUND</div><h1>Light Up the Land<span style="color:#efb850">.</span></h1></div><button id="settingsButton">Game settings</button></header>
+<p class="intro">A little hoop. A whole arena. Swipe to score and bring the crowd to life.</p>
+<div class="layout"><section class="court"><canvas id="game" width="540" height="660" tabindex="0" aria-label="Basketball game. Swipe upward from the ball to shoot, or press Space." role="application"></canvas><div class="hud"><div><span>YOUR BASKETS</span><strong id="personal">0</strong></div><div><span id="modeLabel">CONNECTING</span><strong id="crowdHud">0</strong></div></div><div class="message" id="message" aria-live="polite"></div><div class="hint">Swipe the ball toward the hoop · Space to shoot</div></section>
+<aside><div class="eyebrow">ONE CROWD. ONE ARENA.</div><div class="big" id="total">0</div><div class="label">BASKETS TOGETHER</div><div class="progress"><i id="progress"></i></div><div class="milestones"><div class="milestone" id="m0"><b>2</b><span>Color takeover<small>Paint the stands gold</small></span></div><div class="milestone" id="m1"><b>5</b><span>Feel the pulse<small>The crowd comes alive</small></span></div><div class="milestone" id="m2"><b>10</b><span>Light celebration<small>Lights out. Wristbands on.</small></span></div></div><div class="connection" id="connection">Connecting to the arena…</div><div class="actions"><button id="share">Copy room link</button><button id="practice">Shoot a basket</button></div><footer>Unofficial Rocket Arena inspired cartoon. On-screen lights only.<br>Light effects respect reduced-motion preferences.</footer></aside></div>
+</main><dialog id="settings"><h2>Tune the arena</h2><p>Change when the crowd changes color, pulses, and celebrates. In shared mode, thresholds update for everyone in this room.</p><form id="settingsForm"><label>Change color <input id="t0" type="number" min="1" max="1000000" required></label><label>Start pulsing <input id="t1" type="number" min="1" max="1000000" required></label><label>Strobe celebration <input id="t2" type="number" min="1" max="1000000" required></label><label>Reduced light effects <input id="reduce" type="checkbox"></label><label>Room <input id="roomName" type="text" pattern="[a-z0-9-]{1,32}" maxlength="32" required></label><p id="settingsError" class="error" aria-live="polite"></p><div class="actions"><button type="submit">Save settings</button><button type="button" id="closeSettings">Close</button></div></form><p>Prototype controls are open to all room participants. Arena score resets when the prototype server restarts.</p></dialog>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');const $=id=>document.getElementById(id);
+let room=new URL(location.href).searchParams.get('room')||'cavs';if(!/^[a-z0-9-]{1,32}$/.test(room))room='cavs';
+const player=crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2);let state={score:0,thresholds:[2,5,10],players:1},personal=0,shared=false,offline=location.protocol==='file:',everShared=false,polling=false,ball=null,drag=null,reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,celebrateUntil=0,lastLevel=0,lastPhase=0,messageUntil=0,pending=[],sending=false;
+const colors=['#f64989','#ffcc62','#61e4ed','#be8cff'];
+let burstStart=-10000,arenaDim=0;
+function seatHash(i){let n=(i+1)*2654435761;n=Math.imul(n^(n>>>16),2246822507);return (n^(n>>>13))>>>0;}
+const seats=Array.from({length:476},(_,i)=>{const row=Math.floor(i/34),col=i%34;return {x:19+col*15.2,y:143+row*12+(row>=7?22:0)+Math.pow((col-16.5)/16.5,2)*22,rank:seatHash(i)/4294967296,phase:seatHash(i+600)/4294967296*Math.PI*2,shirt:seatHash(i+1200)%4};});
+function api(path){return path+'?room='+encodeURIComponent(room)+'&player='+encodeURIComponent(player);}
+async function request(path,body){const response=await fetch(api(path),{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined,signal:AbortSignal.timeout(5000)});
+ const contentType=response.headers.get('content-type')||'';
+ if(response.status===404||response.status===405||response.ok&&!contentType.includes('application/json')){const error=Error('Shared server is not installed on this host.');error.unavailable=true;throw error;}
+ if(!response.ok)throw Error('Connection interrupted');
+ const next=await response.json();if(!Number.isInteger(next.score)||next.score<0||!Array.isArray(next.thresholds)||next.thresholds.length!==3||!next.thresholds.every(n=>Number.isInteger(n)&&n>0)||!(next.thresholds[0]<next.thresholds[1]&&next.thresholds[1]<next.thresholds[2])){const error=Error('Shared server is not installed on this host.');error.unavailable=true;throw error;}return next;
+}
+function useSolo(){if(everShared||offline)return;offline=true;shared=false;const unsynced=pending.length;pending=[];adopt({...state,score:state.score+unsynced,players:1});}
+function say(text){$('message').textContent=text;messageUntil=performance.now()+1400;}
+function adopt(next,initial=false){state=next;const level=state.score>=state.thresholds[2]?3:state.score>=state.thresholds[1]?2:state.score>=state.thresholds[0]?1:0;const phase=Math.floor(state.score/state.thresholds[2]);if(!initial&&((level===3&&lastLevel<3)||phase>lastPhase)){celebrateUntil=performance.now()+2400;say('THE LAND IS LIT!');}else if(!initial&&level>lastLevel)say(level===1?'COLOR TAKEOVER!':'FEEL THE PULSE!');lastLevel=level;lastPhase=phase;update();}
+function update(){for(const id of ['total','crowdHud'])$(id).textContent=state.score;$('personal').textContent=personal;$('modeLabel').textContent=shared?'SHARED ARENA':offline?'SOLO PLAY':'CONNECTING';document.querySelector('.label').textContent=offline?'YOUR ARENA BASKETS':'BASKETS TOGETHER';$('progress').style.width=Math.min(100,state.score/state.thresholds[2]*100)+'%';state.thresholds.forEach((n,i)=>{$('m'+i).querySelector('b').textContent=n;$('m'+i).classList.toggle('active',state.score>=n);});$('connection').textContent=shared?`Room ${room} · ${state.players} active player${state.players===1?'':'s'} · Live shared score${pending.length?' · syncing baskets…':''}`:offline?'Solo play · lighting follows your baskets on this device.':'Connection paused · your baskets will sync when it returns.';}
+async function flush(){if(sending||offline||!pending.length)return;sending=true;try{while(pending.length&&!offline){const next=await request('/api/score',{id:pending[0]});if(offline)return;pending.shift();everShared=true;shared=true;adopt(next);}}catch(error){if(error.unavailable&&!everShared)useSolo();else{shared=false;update();}}finally{sending=false;}}
+async function poll(initial=false){if(offline||polling)return;polling=true;try{const next=await request('/api/state');if(offline)return;everShared=true;shared=true;adopt(next,initial);await flush();}catch(error){if(error.unavailable&&!everShared)useSolo();else{shared=false;update();}}finally{polling=false;}}
+function score(){burstStart=performance.now();personal++;if(offline)adopt({...state,score:state.score+1});else{pending.push(player+'-'+personal);update();flush();}say(['SWISH!','BUCKET!','LET’S GO, CAVS!'][personal%3]);}
+function shoot(dx=0,dy=-180){if(ball)return;const good=dy<-28&&Math.abs(dx)<Math.abs(dy)*2.2;ball={start:performance.now(),good,dx:good?0:Math.max(-180,Math.min(180,dx)),scored:false};drag=null;}
+canvas.addEventListener('pointerdown',e=>{if(ball)return;const rect=canvas.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*540,y=(e.clientY-rect.top)/rect.height*660;if(Math.hypot(x-270,y-561)>95)return;canvas.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY,dx:0,dy:0};});
+canvas.addEventListener('pointermove',e=>{if(drag){const rect=canvas.getBoundingClientRect();drag.dx=(e.clientX-drag.x)*540/rect.width;drag.dy=(e.clientY-drag.y)*660/rect.height;}});
+canvas.addEventListener('pointerup',e=>{if(drag){const rect=canvas.getBoundingClientRect();const dx=(e.clientX-drag.x)*540/rect.width,dy=(e.clientY-drag.y)*660/rect.height;if(Math.hypot(dx,dy)>20)shoot(dx,dy);else drag=null;}});canvas.addEventListener('pointercancel',()=>drag=null);
+canvas.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();shoot();}});$('practice').onclick=()=>shoot();
+function line(x1,y1,x2,y2,color,width=2){ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=width;ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+function basketball(x,y,r,rotation=0){ctx.save();ctx.translate(x,y);ctx.rotate(rotation);const g=ctx.createRadialGradient(-r*.3,-r*.4,1,0,0,r);g.addColorStop(0,'#ffdf72');g.addColorStop(1,'#ff841f');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#55224f';ctx.lineWidth=Math.max(2.5,r*.085);ctx.stroke();line(-r,0,r,0,'#572513',r*.05);line(0,-r,0,r,'#572513',r*.05);ctx.beginPath();ctx.ellipse(0,0,r*.48,r,0,0,Math.PI*2);ctx.stroke();ctx.restore();}
+function draw(time){arenaDim+=((state.score>=state.thresholds[2]?1:0)-arenaDim)*.055;ctx.clearRect(0,0,540,660);const bg=ctx.createLinearGradient(0,0,0,450);bg.addColorStop(0,'#352c54');bg.addColorStop(1,'#b66386');ctx.fillStyle=bg;ctx.fillRect(0,0,540,660);
+// A curved seating bowl with two decks, suite level, roof trusses, and a center-hung screen.
+ctx.fillStyle='#68354d';ctx.beginPath();ctx.ellipse(270,232,370,172,0,0,Math.PI*2);ctx.fill();
+for(let row=0;row<14;row++){const y=144+row*12+(row>=7?22:0);ctx.strokeStyle='#442c45';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,y+22);ctx.quadraticCurveTo(270,y-22,540,y+22);ctx.stroke();}
+for(let i=0;i<8;i++){line(i*80-30,0,270,105,'#92829f',3);line(i*80-30,0,i*80+65,65,'#66536f',2);}
+ctx.fillStyle='#332c41';ctx.fillRect(0,216,540,24);for(let x=6;x<540;x+=31){ctx.fillStyle='#f7dc8780';ctx.fillRect(x,220,23,10);line(x,232,x+23,232,'#a991a8',2);}
+ctx.fillStyle='#9c234f';ctx.fillRect(0,236,540,9);ctx.fillStyle='#ffd667';ctx.font='800 7px system-ui';ctx.textAlign='center';for(let x=42;x<540;x+=100)ctx.fillText('LET EM KNOW',x,243);
+// Section aisles cut between the seating blocks.
+for(const x of [86,186,354,454]){ctx.fillStyle='#473044';ctx.beginPath();ctx.moveTo(x-2,141);ctx.lineTo(x+2,141);ctx.lineTo(x+12,333);ctx.lineTo(x-12,333);ctx.closePath();ctx.fill();for(let y=155;y<332;y+=13)line(x-6,y,x+6,y,'#ae8996',1);}
+for(const seat of seats){
+ if([86,186,354,454].some(x=>Math.abs(seat.x-x)<8))continue;
+ ctx.fillStyle=['#9c2853','#ffd35e','#eb7295','#fff1c4'][seat.shirt];ctx.strokeStyle='#563169';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(seat.x-5,seat.y-1,11,8,2);ctx.fill();ctx.stroke();
+ ctx.fillStyle=['#ffdbb2','#d59c75','#9e694e','#f2bb94'][seat.shirt];ctx.beginPath();ctx.arc(seat.x,seat.y-6,3.2,0,Math.PI*2);ctx.fill();ctx.stroke();
+}
+// Center-hung video board, framed in Cavs wine and gold.
+line(242,44,242,103,'#b2a5ba',4);line(298,44,298,103,'#b2a5ba',4);
+ctx.fillStyle='#37172c';ctx.strokeStyle='#ffd263';ctx.lineWidth=4;ctx.beginPath();ctx.roundRect(174,100,192,76,9);ctx.fill();ctx.stroke();
+ctx.fillStyle='#f9cd63';ctx.font='900 10px system-ui';ctx.textAlign='center';ctx.fillText('CLEVELAND CAVALIERS',270,116);
+ctx.fillStyle='#822447';ctx.fillRect(185,123,170,39);ctx.fillStyle='#fff1b7';ctx.font='900 22px system-ui';ctx.fillText('LET EM KNOW',270,150);
+ctx.fillStyle='#291d36';ctx.fillRect(185,164,170,8);ctx.fillStyle='#fff';ctx.font='700 6px system-ui';ctx.fillText('ROCKET ARENA  •  FAN ENERGY  '+state.score,270,170);
+ctx.fillStyle='#711c3a';ctx.fillRect(0,338,540,32);line(0,338,540,338,'#ffcf65',3);line(0,370,540,370,'#41213a',4);ctx.fillStyle='#ffdf83';ctx.textAlign='center';ctx.font='900 13px system-ui';ctx.fillText('C L E V E L A N D   C A V A L I E R S',270,359);
+// Dim the seating bowl first, then paint the LEDs above the darkness.
+ctx.save();ctx.fillStyle='rgba(8,5,25,'+(arenaDim*.86)+')';ctx.fillRect(0,0,540,370);ctx.restore();
+drawWristbands(time);
+// Hardwood half court seen from the shooting end: baseline, sidelines, paint, arcs and center circle.
+const floor=ctx.createLinearGradient(0,370,0,660);floor.addColorStop(0,'#f4c876');floor.addColorStop(1,'#ffe7a4');ctx.fillStyle=floor;ctx.fillRect(0,370,540,290);
+// Staggered maple boards: long planks, offset ends, and loose cartoon grain.
+const maple=['#f7d18a','#f4c77e','#ffdfa0','#f9d694','#f1c47b'];
+let plankY=370,row=0;
+while(plankY<660){const height=10+row*.6,width=100+row*4,offset=-(seatHash(row+2400)%100)/100*width;
+ for(let x=offset;x<540;x+=width){const shade=seatHash(row*29+Math.round(x)+4000);ctx.fillStyle=maple[shade%maple.length];ctx.fillRect(x,plankY,width,height);
+  line(x,plankY+height,x+width,plankY+height,'#b7834526',.8);line(x,plankY,x,plankY+height,'#b7834538',1);
+  for(let grain=0;grain<2;grain++){const gy=plankY+height*(.3+grain*.36);ctx.beginPath();ctx.strokeStyle=grain?'#fff0c84d':'#c18f4c36';ctx.lineWidth=1;ctx.moveTo(x+14,gy);ctx.bezierCurveTo(x+width*.35,gy-2,x+width*.65,gy+2,x+width-16,gy);ctx.stroke();}
+ }
+ plankY+=height;row++;
+}
+// Soft varnish sheen across the maple.
+const sheen=ctx.createLinearGradient(0,370,540,660);sheen.addColorStop(0,'#fff7d51c');sheen.addColorStop(.5,'#fff7d533');sheen.addColorStop(1,'#fff7d500');ctx.fillStyle=sheen;ctx.fillRect(0,370,540,290);
+function courtPoint(x,d){const scale=.48+.62*d;return {x:270+x*scale,y:382+d*270};}
+function courtPath(points,color='#71324d',width=3,fill=null){ctx.beginPath();points.forEach(([x,d],i)=>{const p=courtPoint(x,d);if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});if(fill){ctx.closePath();ctx.fillStyle=fill;ctx.fill();}ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}
+function courtArc(cx,cy,rx,ry,start,end,color='#71324d',width=3){const points=[];for(let i=0;i<=80;i++){const angle=start+(end-start)*i/80;points.push([cx+rx*Math.cos(angle),cy+ry*Math.sin(angle)]);}courtPath(points,color,width);}
+// Wine apron and clear in-bounds rectangle.
+courtPath([[-250,0],[250,0],[250,1],[-250,1],[-250,0]],'#6b243f',5);
+courtPath([[-80,0],[80,0],[80,.44],[-80,.44]],'#fff3c6',3,'#8e2548');
+courtPath([[-80,.44],[80,.44]],'#fff3c6',3);
+courtArc(0,.44,80,.115,0,Math.PI,'#71324d',3);
+ctx.save();ctx.setLineDash([7,6]);courtArc(0,.44,80,.115,Math.PI,Math.PI*2,'#ffe3ae',2);ctx.restore();
+// Restricted-area arc and short lane tick marks.
+courtArc(0,.10,37,.062,0,Math.PI,'#ffe9b8',2);
+for(const d of [.15,.22,.29,.36]){courtPath([[-80,d],[-96,d]],'#fff5d8',2);courtPath([[80,d],[96,d]],'#fff5d8',2);}
+// Corner threes join the broad three-point arc.
+courtPath([[-213,0],[-213,.21]],'#71324d',3);courtPath([[213,0],[213,.21]],'#71324d',3);
+courtArc(0,.21,213,.49,0,Math.PI,'#71324d',3);
+courtPath([[-250,.94],[250,.94]],'#71324d',3);courtArc(0,.94,67,.11,0,Math.PI*2,'#71324d',3);
+// A stylized center-court C, kept distinct from the gameplay target.
+ctx.save();ctx.translate(270,639);ctx.scale(1,.55);ctx.font='italic 900 74px Georgia';ctx.textAlign='center';ctx.lineWidth=6;ctx.strokeStyle='#6c1d3b';ctx.strokeText('C',0,26);ctx.fillStyle='#ffc949';ctx.fillText('C',0,26);ctx.restore();
+ctx.save();ctx.translate(113,405);ctx.rotate(-.07);ctx.font='900 11px system-ui';ctx.fillStyle='#752440';ctx.fillText('CLEVELAND',0,0);ctx.restore();
+ctx.save();ctx.fillStyle='rgba(8,5,25,'+(arenaDim*.32)+')';ctx.fillRect(0,370,540,290);ctx.restore();
+// Courtside seats and a grounded hoop stanchion behind the baseline.
+for(const x of [27,49,71,469,491,513]){ctx.fillStyle='#301f2e';ctx.strokeStyle='#edc363';ctx.lineWidth=2;ctx.fillRect(x-8,363,16,14);ctx.strokeRect(x-8,363,16,14);}
+ctx.fillStyle='#762242';ctx.strokeStyle='#42233a';ctx.lineWidth=4;ctx.beginPath();ctx.roundRect(326,360,32,50,5);ctx.fill();ctx.stroke();line(340,362,340,238,'#493342',10);line(340,238,306,238,'#493342',10);
+ctx.fillStyle='#d1f5ffa6';ctx.strokeStyle='#513047';ctx.lineWidth=6;ctx.beginPath();ctx.roundRect(185,211,170,107,10);ctx.fill();ctx.stroke();ctx.fillStyle='#f0fcff96';ctx.fillRect(197,223,20,72);ctx.strokeStyle='#ffffff';ctx.lineWidth=5;ctx.strokeRect(245,256,50,40);
+for(let i=0;i<9;i++){const x=234+i*9;line(x,304,251+i*5,350,'#f7e4d1bb',1.7);}for(let y=314;y<350;y+=9)line(237+(y-314)*.4,y,303-(y-314)*.4,y,'#f7e4d1bb',1.4);
+ctx.strokeStyle='#ff6c19';ctx.lineWidth=8;ctx.beginPath();ctx.ellipse(270,305,40,9,0,0,Math.PI*2);ctx.stroke();
+ctx.fillStyle='#210c2433';ctx.beginPath();ctx.ellipse(270,606,43,9,0,0,Math.PI*2);ctx.fill();
+if(ball){const p=Math.min(1,(time-ball.start)/1000);let x,y,r;if(p<.7){const q=p/.7;x=270+ball.dx*q;y=561+(305-561)*q-160*Math.sin(Math.PI*q);r=35-21*q;}else{const q=(p-.7)/.3;x=270+ball.dx;y=305+q*150;r=14+q*5;}basketball(x,y,r,p*5);if(p>=.7&&!ball.scored){ball.scored=true;if(ball.good)score();else say('Swipe upward — try again!');}if(p===1)ball=null;}else{basketball(270,561+Math.sin(time/400)*3,35);if(drag){line(270,555,270+drag.dx*.7,555+drag.dy*.7,'#ffedb7',3);}else{ctx.globalAlpha=.5+.3*Math.sin(time/400);line(270,510,270,473,'#fff1c8',3);line(270,473,259,486,'#fff1c8',3);line(270,473,281,486,'#fff1c8',3);ctx.globalAlpha=1;}}
+drawSwish(time);$('message').style.opacity=time<messageUntil?'1':'0';requestAnimationFrame(draw);}
+function drawWristbands(time){const lit=Math.min(1,state.score/state.thresholds[2]),changed=state.score>=state.thresholds[0],finale=time<celebrateUntil;
+ for(const seat of seats){if(seat.rank>=lit||[86,186,354,454].some(x=>Math.abs(seat.x-x)<8))continue;
+  // Higher minimum brightness after lights-out keeps every LED visibly alive.
+  const pulse=state.score>=state.thresholds[1]&&!reduce?.5+.5*(.5+.5*Math.sin(time/230+seat.phase)):1;
+  const flash=finale&&!reduce?.35+.65*(.5+.5*Math.sin(time*Math.PI/500)):pulse;
+  const color=changed?colors[(Math.floor(state.score/state.thresholds[2])+seat.shirt)%colors.length]:'#ff60c7',x=seat.x+4,y=seat.y-2;
+  ctx.save();ctx.globalAlpha=flash;ctx.globalCompositeOperation='lighter';
+  const halo=ctx.createRadialGradient(x,y,0,x,y,9+arenaDim*12);halo.addColorStop(0,color);halo.addColorStop(.25,color+'b0');halo.addColorStop(1,color+'00');ctx.fillStyle=halo;ctx.beginPath();ctx.arc(x,y,9+arenaDim*12,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=18+arenaDim*25;ctx.shadowColor=color;ctx.fillStyle=color;ctx.beginPath();ctx.arc(x,y,3.8+arenaDim*1.6,0,Math.PI*2);ctx.fill();
+  ctx.shadowColor='#ffffff';ctx.shadowBlur=8+arenaDim*12;ctx.fillStyle='#ffffff';ctx.beginPath();ctx.arc(x,y,1.8+arenaDim*1.4,0,Math.PI*2);ctx.fill();ctx.restore();
+ }
+}
+function star(x,y,r,color){ctx.beginPath();for(let i=0;i<10;i++){const a=i*Math.PI/5-Math.PI/2,rr=i%2?r*.42:r;const px=x+Math.cos(a)*rr,py=y+Math.sin(a)*rr;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.closePath();ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#662461';ctx.lineWidth=2;ctx.stroke();}
+function drawSwish(time){const age=time-burstStart;if(age<0||age>850)return;const q=age/850;ctx.save();ctx.globalAlpha=1-q;
+ if(reduce){star(225,296,12,'#ffe34d');star(316,296,12,'#ffe34d');ctx.restore();return;}
+ ctx.strokeStyle='#fff9a6';ctx.lineWidth=7*(1-q)+1;ctx.shadowBlur=18;ctx.shadowColor='#ffdf42';ctx.beginPath();ctx.ellipse(270,307,44+q*90,14+q*35,0,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;
+ for(let i=0;i<18;i++){const a=i*Math.PI*2/18,d=25+q*(65+(i%3)*20),x=270+Math.cos(a)*d,y=305+Math.sin(a)*d*.7+q*q*65;star(x,y,5+(i%3)*3,colors[i%colors.length]);}
+ ctx.translate(270,287-q*36);ctx.rotate(-.12);ctx.font='900 30px system-ui';ctx.textAlign='center';ctx.lineWidth=5;ctx.strokeStyle='#642264';ctx.strokeText('SWISH!',0,0);ctx.fillStyle='#fff463';ctx.fillText('SWISH!',0,0);ctx.restore();}
+$('settingsButton').onclick=()=>{state.thresholds.forEach((n,i)=>$('t'+i).value=n);$('roomName').value=room;$('reduce').checked=reduce;$('settingsError').textContent='';$('settings').showModal();};$('closeSettings').onclick=()=>$('settings').close();
+$('settingsForm').onsubmit=async e=>{e.preventDefault();const thresholds=[0,1,2].map(i=>Number($('t'+i).value));if(!thresholds.every(n=>Number.isInteger(n)&&n>0&&n<=1000000)||!(thresholds[0]<thresholds[1]&&thresholds[1]<thresholds[2])){$('settingsError').textContent='Use three increasing positive whole numbers.';return;}const newRoom=$('roomName').value;if(newRoom!==room){const url=new URL(location.href);url.searchParams.set('room',newRoom);location.href=url.href;return;}try{if(offline)adopt({...state,thresholds});else adopt(await request('/api/settings',{thresholds}));reduce=$('reduce').checked;$('settings').close();}catch(e){$('settingsError').textContent=e.message;}};
+$('share').onclick=async()=>{const url=new URL(location.href);url.searchParams.set('room',room);try{await navigator.clipboard.writeText(url.href);$('share').textContent='Link copied!';setTimeout(()=>$('share').textContent='Copy room link',1800);}catch{prompt('Copy this room link:',url.href);}};
+update();poll(true);setInterval(()=>poll(),1500);requestAnimationFrame(draw);
+</script></body></html>
