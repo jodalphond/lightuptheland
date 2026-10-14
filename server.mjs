@@ -2,7 +2,7 @@ import http from 'node:http';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 export const rooms=new Map();
-const defaults=[2,5,10];
+const defaults=[2,5,10,20,25,30,35,40,45];
 export function roomFor(id){if(!rooms.has(id))rooms.set(id,{score:0,thresholds:[...defaults],seen:new Set(),players:new Map()});return rooms.get(id);}
 export function snapshot(r){const now=Date.now();for(const [id,time] of r.players)if(now-time>15000)r.players.delete(id);return {score:r.score,thresholds:r.thresholds,players:r.players.size,serverTime:now};}
 export const server=http.createServer(async(req,res)=>{try{
@@ -23,8 +23,8 @@ export const server=http.createServer(async(req,res)=>{try{
    if(!r.seen.has(body.id)){r.seen.add(body.id);r.score++;}return json(200,snapshot(r));
   }
   if(url.pathname==='/api/settings'){
-   const t=body.thresholds;if(!Array.isArray(t)||t.length!==3||!t.every(x=>Number.isInteger(x)&&x>0&&x<=1000000)||!(t[0]<t[1]&&t[1]<t[2]))return json(400,{error:'Use three increasing positive whole numbers.'});
-   r.thresholds=t;return json(200,snapshot(r));
+   const t=body.thresholds;if(!Array.isArray(t)||![3,9].includes(t.length)||!t.every((x,i)=>Number.isInteger(x)&&x>0&&x<=1000000&&(i===0||x>t[i-1])))return json(400,{error:'Use three or nine increasing positive whole numbers.'});
+   const expanded=t.slice();if(t.length===3)for(const factor of [2,2.5,3,3.5,4,4.5])expanded.push(Math.max(expanded.at(-1)+1,Math.round(t[2]*factor)));if(expanded.at(-1)>1000000)return json(400,{error:'Milestones must be at most 1000000.'});r.thresholds=expanded;return json(200,snapshot(r));
   }
   return json(404,{error:'Unknown endpoint'});
  }

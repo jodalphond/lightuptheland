@@ -19,10 +19,11 @@ For remote fans, this server must be deployed to an internet-accessible host.
 There is no published URL bundled with this prototype.
 
 ADJUSTING MILESTONES
-Click Game settings. Defaults are 2 / 5 / 10. Enter any three increasing
+Click Game settings. Defaults are 2 / 5 / 10 / 20 / 25 / 30 / 35 / 40 / 45. Enter nine increasing
 positive whole numbers. Changes apply to everyone in the same shared room.
-The final milestone triggers a brief celebration; subsequent multiples
-trigger another celebration. More baskets continue changing the palette.
+At 10 the arena dims with softer lights; 20 brings a wave; 25 a gold sweep;
+30 a heartbeat; 35 alternating sections; 40 an American flag; 45 fireworks.
+The final effect continues as more collective baskets are scored.
 Reduced light effects disables pulsing and flashing. System reduced-motion
 preferences are respected by default.
 

@@ -35,7 +35,7 @@ The `render.yaml` also supports a Render Blueprint if you prefer automatic confi
 
 Open the exact same Render link on two phones. The game should say **SHARED ARENA**. Each person scores once: both phones should show a crowd total of 2 and change the crowd lighting. Updates normally arrive within about 1.5 seconds.
 
-Milestones start at **2 / 5 / 10 collective baskets**. At 10, the arena darkens and the wristbands glow brightly. Game settings changes the milestones for all participants in the room. Keep reduced light effects enabled if desired; lights still appear without pulsing or flashing.
+Milestones are **2 / 5 / 10 / 20 / 25 / 30 / 35 / 40 / 45 collective baskets**. At 10, the arena darkens with softer wristbands. At 20 a wave travels through the crowd; 25 adds a gold sweep; 30 a heartbeat; 35 alternating wine-and-gold sections; 40 an American flag; and 45 fireworks. Game settings changes the milestones for all participants in the room. Keep reduced light effects enabled if desired; lights still appear without pulsing or flashing.
 
 For a fresh test, use Game settings to join a new room, or append `?room=test-two` to the link. Everyone must use the same room name.
 
